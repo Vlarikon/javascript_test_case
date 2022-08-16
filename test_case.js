@@ -28,9 +28,21 @@ function getCardsArrayExpDate(json, date) {
     const parsedJson = JSON.parse(json)
     let returnArray = []
     let tempDate
-    let tempStr
     parsedJson.CardInfo?.forEach(card => {
         tempDate = new Date(card.ExpDate.substr(card.ExpDate.length-4)+'-'+card.ExpDate.substr(3,2)+'-'+card.ExpDate.substr(0,2))
+        if(tempDate < date) {
+            returnArray.push(card.CardNumber.substr(card.CardNumber.length-4))
+        }
+    })
+    return returnArray.length ? returnArray : null
+}
+
+function getCardsArrayExpDate2(json, date) {
+    const parsedJson = JSON.parse(json)
+    let returnArray = []
+    let tempDate
+    parsedJson.CardInfo?.forEach(card => {
+        tempDate = new Date(card.ExpDate)
         if(tempDate < date) {
             returnArray.push(card.CardNumber.substr(card.CardNumber.length-4))
         }
@@ -45,3 +57,7 @@ let date3 = new Date("2021-01-01")
 console.log(getCardsArrayExpDate(JSON.stringify(TEST_JSON_OBJ), date1))
 console.log(getCardsArrayExpDate(JSON.stringify(TEST_JSON_OBJ), date2))
 console.log(getCardsArrayExpDate(JSON.stringify(TEST_JSON_OBJ), date3))
+console.log()
+console.log(getCardsArrayExpDate2(JSON.stringify(TEST_JSON_OBJ), date1))
+console.log(getCardsArrayExpDate2(JSON.stringify(TEST_JSON_OBJ), date2))
+console.log(getCardsArrayExpDate2(JSON.stringify(TEST_JSON_OBJ), date3))
